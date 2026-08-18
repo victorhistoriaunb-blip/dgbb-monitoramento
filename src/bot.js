@@ -22,8 +22,9 @@ const client = new Client({
 });
 
 client.on('qr', (qr) => {
-    console.log('--- SCANEE O QR CODE ABAIXO ---');
+    console.log('\n--- SCANEE O QR CODE ABAIXO ---\n');
     qrcode.generate(qr, { small: true });
+    console.log('\nOU COPIE A STRING DO QR CODE ABAIXO:\n', qr);
 });
 
 client.on('ready', () => {
