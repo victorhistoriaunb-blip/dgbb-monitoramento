@@ -12,6 +12,7 @@ const client = new Client({
     puppeteer: {
         executablePath: chromeExecutablePath,
         headless: true,
+        timeout: 60000,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -30,15 +31,19 @@ const client = new Client({
 client.on('qr', (qr) => {
     const qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(qr);
     console.log('\n==================================================');
-    console.log('ABRA O LINK ABAIXO NO NAVEGADOR PARA ESCANEAR:');
+    console.log('NOVO QR CODE (EXPIRA RAPIDO, ESCANEE LOGO):');
     console.log(qrImageUrl);
     console.log('==================================================\n');
 });
 
 client.on('ready', () => {
-    console.log('Bot conectado e pronto!');
+    console.log('? Bot conectado e pronto!');
+});
+
+client.on('authenticated', () => {
+    console.log('? Autenticado com sucesso!');
 });
 
 client.initialize().catch(err => {
-    console.error('Erro na inicializacao:', err);
+    console.error('Erro na inicialização:', err);
 });
