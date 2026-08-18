@@ -1,11 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
 const path = require('path');
 
 const chromeExecutablePath = path.join(process.cwd(), '.cache', 'puppeteer', 'chrome', 'linux-146.0.7680.31', 'chrome-linux64', 'chrome');
-
-console.log('Iniciando script...');
-console.log('Caminho do Chrome configurado:', chromeExecutablePath);
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -25,24 +21,15 @@ const client = new Client({
 });
 
 client.on('qr', (qr) => {
-    console.log('--- QR CODE GERADO ---');
-    qrcode.generate(qr, { small: true });
-    console.log('STRING DO QR:', qr);
+    const qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(qr);
+    console.log('\n==================================================');
+    console.log('ABRA O LINK ABAIXO NO SEU NAVEGADOR PARA ESCANEAR:');
+    console.log(qrImageUrl);
+    console.log('==================================================\n');
 });
 
 client.on('ready', () => {
     console.log('Bot conectado e pronto!');
 });
 
-client.on('auth_failure', msg => {
-    console.error('Falha na autenticação:', msg);
-});
-
-client.on('disconnected', (reason) => {
-    console.log('Cliente desconectado:', reason);
-});
-
-console.log('Inicializando o cliente do WhatsApp...');
-client.initialize().catch(err => {
-    console.error('Erro ao inicializar o client:', err);
-});
+client.initialize();
