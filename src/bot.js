@@ -2,12 +2,12 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const path = require('path');
 
-// Aponta o cache do Puppeteer para a pasta local do projeto
-process.env.PUPPETEER_CACHE_DIR = path.join(__dirname, '../.cache/puppeteer');
+const chromeExecutablePath = path.join(process.cwd(), '.cache', 'puppeteer', 'chrome', 'linux-146.0.7680.31', 'chrome-linux64', 'chrome');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
+        executablePath: chromeExecutablePath,
         headless: true,
         args: [
             '--no-sandbox',
