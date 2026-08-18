@@ -4,6 +4,9 @@ const path = require('path');
 
 const chromeExecutablePath = path.join(process.cwd(), '.cache', 'puppeteer', 'chrome', 'linux-146.0.7680.31', 'chrome-linux64', 'chrome');
 
+console.log('Iniciando script...');
+console.log('Caminho do Chrome configurado:', chromeExecutablePath);
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
@@ -22,13 +25,24 @@ const client = new Client({
 });
 
 client.on('qr', (qr) => {
-    console.log('\n--- SCANEE O QR CODE ABAIXO ---\n');
+    console.log('--- QR CODE GERADO ---');
     qrcode.generate(qr, { small: true });
-    console.log('\nOU COPIE A STRING DO QR CODE ABAIXO:\n', qr);
+    console.log('STRING DO QR:', qr);
 });
 
 client.on('ready', () => {
     console.log('Bot conectado e pronto!');
 });
 
-client.initialize();
+client.on('auth_failure', msg => {
+    console.error('Falha na autenticação:', msg);
+});
+
+client.on('disconnected', (reason) => {
+    console.log('Cliente desconectado:', reason);
+});
+
+console.log('Inicializando o cliente do WhatsApp...');
+client.initialize().catch(err => {
+    console.error('Erro ao inicializar o client:', err);
+});
