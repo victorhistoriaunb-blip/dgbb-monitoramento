@@ -5,6 +5,10 @@ const chromeExecutablePath = path.join(process.cwd(), '.cache', 'puppeteer', 'ch
 
 const client = new Client({
     authStrategy: new LocalAuth(),
+    webVersionCache: {
+        type: 'remote',
+        remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
+    },
     puppeteer: {
         executablePath: chromeExecutablePath,
         headless: true,
@@ -15,7 +19,10 @@ const client = new Client({
             '--disable-accelerated-2d-canvas',
             '--no-first-run',
             '--no-zygote',
-            '--disable-gpu'
+            '--single-process',
+            '--disable-gpu',
+            '--js-flags="--max-old-space-size=256"',
+            '--disable-extensions'
         ]
     }
 });
@@ -32,4 +39,6 @@ client.on('ready', () => {
     console.log('Bot conectado e pronto!');
 });
 
-client.initialize();
+client.initialize().catch(err => {
+    console.error('Erro na inicializacao:', err);
+});
