@@ -23,7 +23,7 @@ const client = new Client({
 client.on('qr', (qr) => {
     const qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(qr);
     console.log('\n==================================================');
-    console.log('ABRA O LINK ABAIXO NO SEU NAVEGADOR PARA ESCANEAR:');
+    console.log('ABRA O LINK ABAIXO NO NAVEGADOR PARA ESCANEAR:');
     console.log(qrImageUrl);
     console.log('==================================================\n');
 });
